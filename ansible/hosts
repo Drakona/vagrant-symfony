@@ -1,0 +1,23 @@
+dev-1 ansible_ssh_host=188.165.219.57 ansible_ssh_user=deployer
+beta-1 ansible_ssh_host=188.165.219.57 ansible_ssh_user=deployer
+prod-1 ansible_ssh_host=188.165.219.57 ansible_ssh_user=deployer
+
+[deploy_dev]
+dev-1
+
+[deploy_dev:vars]
+ansible_ssh_common_args='-o ControlPath=~/.ansible/cp/%C'
+
+[deploy_beta]
+beta-1
+
+[deploy_beta:vars]
+ansible_ssh_common_args='-o ControlPath=~/.ansible/cp/%C'
+
+[deploy_prod]
+prod-1
+
+[deploy:children]
+deploy_dev
+deploy_beta
+deploy_prod

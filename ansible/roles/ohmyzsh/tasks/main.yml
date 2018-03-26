@@ -1,0 +1,50 @@
+---
+- name: install apt packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - zsh
+    - git
+
+- name: cloning repo
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh
+    dest: "/home/vagrant/.oh-my-zsh"
+  with_items:
+    - root
+    - vagrant
+
+- name: set permissions
+  file:
+    path: "/home/vagrant/.oh-my-zsh"
+    state: directory
+    recurse: yes
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  with_items:
+    - root
+    - vagrant
+
+- name: add syntax highlighting plugin
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "/home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+  with_items:
+    - root
+    - vagrant
+
+- name: creating new ~/.zshrc
+  template:
+    src: zshrc.j2
+    dest: "/home/vagrant/.zshrc"
+  tags: ohmyzsh_config
+
+- name: ensure user is using zsh shell
+  user:
+    name: "{{ item }}"
+    shell: /bin/zsh
+  with_items:
+    - root
+    - vagrant

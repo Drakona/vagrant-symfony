@@ -1,0 +1,54 @@
+# Symfony files
+/var/SymfonyRequirements.php
+
+# cache on previous versions
+/app/bootstrap.php.cache
+
+# Cache
+/var/bootstrap.php.cache
+/var/cache/*
+!var/cache/.gitkeep
+
+# Config
+/app/config/parameters.yml
+
+# Logs
+/var/logs/*
+!var/logs/.gitkeep
+
+# Build files
+/var/build/*
+!var/build/.gitkeep
+
+# Tests
+/app/phpunit.xml
+
+# Dependencies, package managers and local commands
+/vendor/*
+*.cache
+*.phar
+/node_modules/*
+
+# Compiled files
+/build/
+/bin/*
+!bin/console
+!bin/symfony_requirements
+/web/bundles/
+/web/assets/*
+/web/js/*
+/web/uploads/*
+!/web/uploads/.gitkeep
+/web/media/*
+!/web/media/.gitkeep
+/web/tmp/*
+/web/sitemap.*
+
+# Vagrant related
+/.vagrant
+/ansible/*.retry
+*.log
+
+# IDE related
+*.sublime-*
+/.idea

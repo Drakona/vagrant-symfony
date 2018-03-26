@@ -1,0 +1,46 @@
+---
+- name: (purge HHVM)
+  apt: name=hhvm state=absent
+
+- name: PHP 7.x and extensions
+  apt: name={{ item }}
+  with_items:
+    # Symfony
+    - curl
+    - php7.0
+    - php7.0-cli
+    - php7.0-intl
+    - php7.0-curl
+    - php7.0-mbstring
+    # Composer
+    - php7.0-zip
+    # App
+    - php7.0-gd
+    - php7.0-xml
+    - php7.0-xsl
+    - php7.0-imagick
+    - php7.0-mysql
+    - php7.0-imap
+    - php7.0-mcrypt
+    - php7.0-tidy
+    - php7.0-xmlrpc
+    - php7.0-opcache
+    - php-pear
+    - php7.0-dev
+  notify:
+    restart Apache
+
+- name: Activate apache mods
+  apache2_module: name={{ item }} state=present
+  with_items:
+    - actions
+    - alias
+    - suexec
+    - rewrite
+    - ssl
+    - include
+
+- name: copy php.ini customizations
+  copy: src=php-extra.ini dest=/etc/php/7.0/mods-available/extra.ini
+  notify:
+    - restart Apache

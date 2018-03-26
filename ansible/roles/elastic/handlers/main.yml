@@ -1,0 +1,6 @@
+---
+- name: restart Elasticsearch
+  command: systemctl restart elasticsearch.service
+
+- name: start Elasticsearch
+  command: systemctl start elasticsearch.service

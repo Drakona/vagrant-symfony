@@ -1,0 +1,17 @@
+---
+- name: APT install
+  apt: update_cache=yes name=phpmyadmin
+
+- name: create Apache VirtualHost
+  template: src=apache2.vhost.j2 dest=/etc/apache2/sites-available/phpmyadmin.conf
+  notify:
+    restart Apache
+
+# - name: create base config
+#   template: src=config-db.conf.j2 dest=/etc/phpmyadmin/config-db.php
+
+- name: enable Apache VirtualHost
+  command: creates=/etc/apache2/sites-enabled/phpmyadmin.conf
+    a2ensite phpmyadmin
+  notify:
+    restart Apache

@@ -1,0 +1,11 @@
+---
+- name: Add ruby + gem
+  apt: name={{ item }}
+  with_items:
+    - gem
+    - ruby
+    - ruby-dev
+    - rubygems-integration
+
+- name: Install capifony
+  gem: name=capifony state=present include_dependencies=yes

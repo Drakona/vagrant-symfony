@@ -1,0 +1,5 @@
+---
+- name: initialize application via symfony.phar
+  become_user: vagrant
+  shell: creates={{ APPDIR }}/
+    /{{ APPCOMMONDIR }}/symfony.phar new --no-interaction {{ APPDIR }}

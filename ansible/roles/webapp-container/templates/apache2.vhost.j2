@@ -1,0 +1,27 @@
+<VirtualHost *:80>
+    DocumentRoot {{ APPWEBROOT }}
+
+    ServerName www.{{ APPDOMAIN }}
+    ServerAlias www.{{ APPDOMAIN }} {{ APPDOMAIN }}
+
+    # used for http basic auth and oauth2 bearer token
+    SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+
+    SetEnv {{ appshortname }}_DATABASE_HOST localhost
+    SetEnv {{ appshortname }}_DATABASE_PORT 5432
+    SetEnv {{ appshortname }}_DATABASE_NAME {{ dbname }}
+    SetEnv {{ appshortname }}_DATABASE_USER {{ dbuser }}
+    SetEnv {{ appshortname }}_DATABASE_PASSWORD {{ dbpassword }}
+
+    <Directory {{ APPWEBROOT }}>
+        AllowOverride all
+        Require all granted
+        DirectoryIndex app.php
+    </Directory>
+    <Directory /usr/lib/cgi-bin>
+        Require all granted
+    </Directory>
+
+    ErrorLog /var/log/apache2/{{ appname }}.error.log
+    CustomLog /var/log/apache2/{{ appname }}.access.log combined
+</VirtualHost>

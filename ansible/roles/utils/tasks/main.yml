@@ -1,0 +1,19 @@
+---
+- name: Add several useful programs
+  apt: name={{ item }}
+  with_items:
+    - htop
+    - imagemagick
+    - imagemagick-common
+    - pandoc
+    - pngquant
+    - python
+    - python-pip
+    - rar
+    - tar
+    - thefuck
+    - unrar
+    - unzip
+    - vim
+    - virtualenv
+    - zip

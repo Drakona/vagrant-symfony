@@ -1,0 +1,72 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    APPDIR: "/vagrant"
+    APPWEBROOT: "{{ APPDIR }}/web"
+    APPCOMMONDIR: "/opt"
+    APPUSER: "vagrant"
+    APPDOMAIN: "{{ appdomain }}"
+    mysql_root_password: "{{ dbrootpassword }}"
+    mysql_databases:
+      - name: "{{ dbname }}"
+    mysql_users:
+      - name: "{{ dbuser }}"
+        host: "%"
+        password: "{{ dbpassword }}"
+        priv: "{{ dbname }}.*:ALL"
+    php_packages_state: latest
+    php_executable: "php7.2"
+    php_memory_limit: "1024M"
+    php_upload_max_filesize: "200M"
+    php_max_file_uploads: "20"
+    php_post_max_size: "512M"
+    php_date_timezone: "Europe/Paris"
+    php_packages:
+      - libapache2-mod-php7.2
+      - php-apcu
+      - php-pear
+      - php7.2-cli
+      - php7.2-curl
+      - php7.2-dev
+      - php7.2-gd
+      - php7.2-imagick
+      - php7.2-imap
+      - php7.2-intl
+      - php7.2-mbstring
+      # - php7.2-mcrypt
+      - php7.2-mysql
+      - php7.2-opcache
+      - php7.2-tidy
+      - php7.2-xml
+      - php7.2-xmlrpc
+      - php7.2-xsl
+      - php7.2-zip
+    php_xdebug_version: 2.6.0alpha1
+
+  pre_tasks:
+    - name: Add latest php repository
+      become: true
+      apt_repository: repo='ppa:ondrej/php' state=present
+
+    - name: check last APT update time
+      apt: update_cache=yes cache_valid_time=86400
+
+  roles:
+    - apache
+    - git
+    - { role: geerlingguy.mysql }
+    # - hhvm
+    # - php
+    - { role: geerlingguy.php }
+    - { role: geerlingguy.php-xdebug }
+    - phpmyadmin
+    # - webapp
+    - webapp-container
+    - vagrantbox
+    - nodejs
+    - yarn
+    - ruby
+    - ohmyzsh
+    - utils
+    - elastic

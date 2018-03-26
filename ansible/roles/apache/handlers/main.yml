@@ -1,0 +1,3 @@
+---
+- name: restart Apache
+  command: systemctl restart apache2.service

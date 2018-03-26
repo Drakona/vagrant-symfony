@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+    DocumentRoot /usr/share/phpmyadmin
+
+    ServerName pma.{{ APPDOMAIN }}
+    ServerAlias pma.{{ APPDOMAIN }}
+
+    # used for http basic auth and oauth2 bearer token
+    SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+
+    SetEnv {{ appshortname }}_DATABASE_HOST localhost
+    SetEnv {{ appshortname }}_DATABASE_PORT 5432
+    SetEnv {{ appshortname }}_DATABASE_NAME {{ dbname }}
+    SetEnv {{ appshortname }}_DATABASE_USER {{ dbuser }}
+    SetEnv {{ appshortname }}_DATABASE_PASSWORD {{ dbpassword }}
+
+    <Directory /usr/share/phpmyadmin>
+        AllowOverride all
+        Require all granted
+    </Directory>
+    <Directory /usr/lib/cgi-bin>
+        Require all granted
+    </Directory>
+
+    ErrorLog /var/log/apache2/phpmyadmin.error.log
+    CustomLog /var/log/apache2/phpmyadmin.access.log combined
+</VirtualHost>

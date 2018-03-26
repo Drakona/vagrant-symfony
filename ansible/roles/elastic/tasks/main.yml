@@ -1,0 +1,27 @@
+---
+- name: Install prerequisites
+  become: yes
+  apt: name=apt-transport-https state=present
+
+- name: Add apt signing key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add package repositories
+  become: true
+  apt_repository: repo={{ item }} state=present
+  with_items:
+    - deb https://artifacts.elastic.co/packages/5.x/apt stable main
+
+- name: Elastic suite (elasticsearch and Kibana)
+  apt: name=openjdk-8-jre-headless,elasticsearch,kibana
+
+- name: Ensure elasticsearch is started
+  service: name=elasticsearch state=started enabled=true
+
+- name: Add kibana config
+  template: src=kibana.yml.j2 dest=/etc/kibana/kibana.yml
+
+- name: Ensure kibana is started
+  service: name=kibana state=started enabled=true

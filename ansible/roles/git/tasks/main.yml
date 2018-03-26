@@ -1,0 +1,3 @@
+---
+- name: APT install Git
+  apt: name=git
